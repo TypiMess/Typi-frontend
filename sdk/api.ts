@@ -80,7 +80,7 @@ export class RequiredError extends Error {
  * @export
  * @interface ListFriends
  */
-export interface ListFriends extends Array<User & any> {
+export interface ListFriends extends Array<User & { TargetUser: number, Status: string }> {
 }
 /**
  * 

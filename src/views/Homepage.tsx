@@ -1,4 +1,5 @@
 import React from "react";
+import Info from "./homepage-components/Info";
 import Login from "./homepage-components/Login";
 import Register from "./homepage-components/Register";
 
@@ -30,6 +31,7 @@ export default class Homepage extends React.Component<{}, IStates> {
                     <button className="btn btn-secondary m-3" onClick={this.handleFormSwitch}>{ this.state.showLoginForm ? "Register" : "Login" }</button>
                 </div>
                 { this.state.showLoginForm ? <Login /> : <Register /> }
+                <Info/>
             </>
         );
     }

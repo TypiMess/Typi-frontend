@@ -18,7 +18,7 @@ class App extends React.Component<{}, IState> {
 
     componentDidMount() {
         SessionsController.VerifySession().then(valid => {
-            //this.setState({ isLoggedIn: valid });
+            this.setState({ isLoggedIn: valid });
         });
     }
 
