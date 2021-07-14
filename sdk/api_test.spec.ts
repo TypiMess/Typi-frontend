@@ -74,6 +74,9 @@ describe("UsersApi", () => {
   test("usersFriendsGet", () => {
     return expect(instance.usersFriendsGet({})).resolves.toBe(null)
   })
+  test("usersFriendsRequestsGet", () => {
+    return expect(instance.usersFriendsRequestsGet({})).resolves.toBe(null)
+  })
   test("usersFriendsUpdateRelationshipPut", () => {
     const body: api.any = undefined
     return expect(instance.usersFriendsUpdateRelationshipPut(body, {})).resolves.toBe(null)

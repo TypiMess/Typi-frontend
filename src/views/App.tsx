@@ -2,23 +2,12 @@ import React, { useState } from 'react'
 import Homepage from './Homepage'
 import ChatApp from './ChatApp'
 import SessionsController from '../controllers/SessionsController';
+import CurrentUserController from '../controllers/CurrentUserController';
 
-interface IState {
-    isLoggedIn: boolean
-}
-
-class App extends React.Component<{}, IState> {
-    constructor(props: {}) {
-        super(props);
-
-        this.state = {
-            isLoggedIn: false
-        }
-    }
-
+class App extends React.Component {
     componentDidMount() {
         SessionsController.VerifySession().then(valid => {
-            this.setState({ isLoggedIn: valid });
+            if (valid) CurrentUserController.Update();
         });
     }
 
@@ -26,7 +15,7 @@ class App extends React.Component<{}, IState> {
         return (
             <div className="App">
                 {
-                    !this.state.isLoggedIn ?
+                    !CurrentUserController.IsReady ?
                         <Homepage /> :
                         <ChatApp />
                 }

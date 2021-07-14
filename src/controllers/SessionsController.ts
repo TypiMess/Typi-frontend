@@ -2,7 +2,7 @@ import APIConfig, { COOKIE_SESSION_ID_NAME } from "./APIConfig";
 import { SessionsApi } from "../../sdk";
 
 export default class SessionsController {
-    private static _sessionsAPI = new SessionsApi();
+    private static _sessionsAPI = new SessionsApi(APIConfig);
     
     /**
      * Send a request to extend the current session TTL
