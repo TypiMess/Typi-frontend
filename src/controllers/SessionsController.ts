@@ -1,4 +1,4 @@
-import APIConfig, { COOKIE_SESSION_ID_NAME } from "./APIConfig";
+import APIConfig from "./APIConfig";
 import { SessionsApi } from "../../sdk";
 
 export default class SessionsController {

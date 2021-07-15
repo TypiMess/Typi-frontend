@@ -7,6 +7,7 @@ import APIConfig from "./APIConfig";
 export default class CurrentUserController {
     private static _instance: CurrentUserController;
     private static _userAPI = new UsersApi(APIConfig);
+    private static _onReadyCallbacks: {owner: React.Component, callback: Function}[] = [];
     
     private _currentUser: User;
     private _friends: User[];
@@ -29,7 +30,7 @@ export default class CurrentUserController {
      * @throws {UnauthorizedError} if user is not logged in
      * @throws {UnknownError} for other errors
      */
-    public static async Update()
+    static async Update()
     {
         try
         {
@@ -37,29 +38,30 @@ export default class CurrentUserController {
             let getFriendsRes = await this._userAPI.usersFriendsGet();
             let getFriendRequestsRes = await this._userAPI.usersFriendsRequestsGet();
             
-            let currentUser = new User(getCurrentUserRes.userID, getCurrentUserRes.username);
-            let listFriends: User[] = [];
-            let listFriendRequests: User[] = [];
+            let currentUser = new User(getCurrentUserRes.username);
+            let listFriends = getFriendsRes.map(u => { return new User(u.username) });
+            let listFriendRequests = getFriendRequestsRes.map(u => { return new User(u.username) });
             
-            getFriendsRes.map(u => listFriends.push(new User(u.userID, u.username)));
-            getFriendRequestsRes.map(u => listFriendRequests.push(new User(u.userID, u.username)));
-            
-            if (CurrentUserController._instance === undefined)
+            if (this._instance === undefined)
             {
-                CurrentUserController._instance = new CurrentUserController(currentUser, listFriends, listFriendRequests);
+                this._instance = new CurrentUserController(currentUser, listFriends, listFriendRequests);
             }
             else
             {
-                CurrentUserController._instance._currentUser = currentUser;
-                CurrentUserController._instance._friends = listFriends;
-                CurrentUserController._instance._friendRequests = listFriendRequests;
+                this._instance._currentUser = currentUser;
+                this._instance._friends = listFriends;
+                this._instance._friendRequests = listFriendRequests;
             }
+            
+            this._onReadyCallbacks.forEach(entry => {
+                entry.callback(entry.owner);
+            });
         }
         catch (e)
         {
             let response = <Response>e;
             
-            console.error("Error updating current user.");
+            console.error(`${response.status}: Error updating current user.`);
             
             if (response.status == 401)
             {
@@ -73,11 +75,12 @@ export default class CurrentUserController {
     }
     
     /**
-     * Used to check if the instance is available. Instance is only defined if current user's info are loaded.
-     * This function can be used to check if current user is loaded
+     * Add a callback function from a React Component to a pool, it will be called after current user's info is updated.
+     * @param owner an instance of a {@link React.Component}
+     * @param callback a function to call when instance is ready
      */
-    static get IsReady()
+    static AddOnReadyListener(owner: React.Component, callback: Function)
     {
-        return CurrentUserController.Instance !== undefined;
+        this._onReadyCallbacks.push({ owner, callback });
     }
 }

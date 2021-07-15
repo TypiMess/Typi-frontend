@@ -4,10 +4,26 @@ import ChatApp from './ChatApp'
 import SessionsController from '../controllers/SessionsController';
 import CurrentUserController from '../controllers/CurrentUserController';
 
-class App extends React.Component {
+interface IStates {
+    isLoggedIn: boolean
+}
+
+class App extends React.Component<{}, IStates> {
+    constructor(props: {})
+    {
+        super(props);
+        
+        this.state = {
+            isLoggedIn: false
+        }
+    }
+    
     componentDidMount() {
         SessionsController.VerifySession().then(valid => {
-            if (valid) CurrentUserController.Update();
+            if (valid) {
+                CurrentUserController.AddOnReadyListener(this, function(component: React.Component) { component.setState({ isLoggedIn: true }) });
+                CurrentUserController.Update().catch(error => console.error(error));
+            }
         });
     }
 
@@ -15,9 +31,9 @@ class App extends React.Component {
         return (
             <div className="App">
                 {
-                    !CurrentUserController.IsReady ?
-                        <Homepage /> :
-                        <ChatApp />
+                    this.state.isLoggedIn ?
+                        <ChatApp /> :
+                        <Homepage />
                 }
             </div>
         )

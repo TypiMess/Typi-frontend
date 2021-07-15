@@ -21,13 +21,14 @@ describe("ChatApi", () => {
     instance = new api.ChatApi(config)
   });
 
-  test("chatGetMessagesTargetUserIDGet", () => {
-    const targetUserID: number = 1.2
-    return expect(instance.chatGetMessagesTargetUserIDGet(targetUserID, {})).resolves.toBe(null)
+  test("chatGetMessagesTargetUsernameGet", () => {
+    const targetUsername: string = "targetUsername_example"
+    return expect(instance.chatGetMessagesTargetUsernameGet(targetUsername, {})).resolves.toBe(null)
   })
-  test("chatSendMessageTargetUserIDPost", () => {
-    const targetUserID: number = 56
-    return expect(instance.chatSendMessageTargetUserIDPost(targetUserID, {})).resolves.toBe(null)
+  test("chatSendMessageTargetUsernamePost", () => {
+    const body: api.any = undefined
+    const targetUsername: string = "targetUsername_example"
+    return expect(instance.chatSendMessageTargetUsernamePost(body, targetUsername, {})).resolves.toBe(null)
   })
 })
 
@@ -56,6 +57,9 @@ describe("SessionsApi", () => {
   test("sessionsKeepAlivePut", () => {
     return expect(instance.sessionsKeepAlivePut({})).resolves.toBe(null)
   })
+  test("sessionsLogoutDelete", () => {
+    return expect(instance.sessionsLogoutDelete({})).resolves.toBe(null)
+  })
   test("sessionsVerifyGet", () => {
     return expect(instance.sessionsVerifyGet({})).resolves.toBe(null)
   })
@@ -67,6 +71,10 @@ describe("UsersApi", () => {
     instance = new api.UsersApi(config)
   });
 
+  test("usersFriendsAcceptTargetUsernamePost", () => {
+    const targetUsername: string = "targetUsername_example"
+    return expect(instance.usersFriendsAcceptTargetUsernamePost(targetUsername, {})).resolves.toBe(null)
+  })
   test("usersFriendsAddTargetUsernamePost", () => {
     const targetUsername: string = "targetUsername_example"
     return expect(instance.usersFriendsAddTargetUsernamePost(targetUsername, {})).resolves.toBe(null)

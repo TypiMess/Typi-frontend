@@ -149,12 +149,6 @@ export interface User {
      * @memberof User
      */
     username: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof User
-     */
-    userID: number;
 }
 /**
  * ChatApi - fetch parameter creator
@@ -164,19 +158,19 @@ export const ChatApiFetchParamCreator = function (configuration?: Configuration)
     return {
         /**
          * Get messages between current user and target user
-         * @param {number} targetUserID 
+         * @param {string} targetUsername 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        chatGetMessagesTargetUserIDGet(targetUserID: number, options: any = {}): FetchArgs {
-            // verify required parameter 'targetUserID' is not null or undefined
-            if (targetUserID === null || targetUserID === undefined) {
-                throw new RequiredError('targetUserID','Required parameter targetUserID was null or undefined when calling chatGetMessagesTargetUserIDGet.');
+        chatGetMessagesTargetUsernameGet(targetUsername: string, options: any = {}): FetchArgs {
+            // verify required parameter 'targetUsername' is not null or undefined
+            if (targetUsername === null || targetUsername === undefined) {
+                throw new RequiredError('targetUsername','Required parameter targetUsername was null or undefined when calling chatGetMessagesTargetUsernameGet.');
             }
-            const localVarPath = `/chat/getMessages/{TargetUserID}`
-                .replace(`{${"TargetUserID"}}`, encodeURIComponent(String(targetUserID)));
+            const localVarPath = `/chat/getMessages/{TargetUsername}`
+                .replace(`{${"TargetUsername"}}`, encodeURIComponent(String(targetUsername)));
             const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarRequestOptions = Object.assign({ method: 'GET', credentials: 'include' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -200,19 +194,24 @@ export const ChatApiFetchParamCreator = function (configuration?: Configuration)
         },
         /**
          * Send a message to target user
-         * @param {number} targetUserID 
+         * @param {any} body 
+         * @param {string} targetUsername 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        chatSendMessageTargetUserIDPost(targetUserID: number, options: any = {}): FetchArgs {
-            // verify required parameter 'targetUserID' is not null or undefined
-            if (targetUserID === null || targetUserID === undefined) {
-                throw new RequiredError('targetUserID','Required parameter targetUserID was null or undefined when calling chatSendMessageTargetUserIDPost.');
+        chatSendMessageTargetUsernamePost(body: any, targetUsername: string, options: any = {}): FetchArgs {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body','Required parameter body was null or undefined when calling chatSendMessageTargetUsernamePost.');
             }
-            const localVarPath = `/chat/sendMessage/{TargetUserID}`
-                .replace(`{${"TargetUserID"}}`, encodeURIComponent(String(targetUserID)));
+            // verify required parameter 'targetUsername' is not null or undefined
+            if (targetUsername === null || targetUsername === undefined) {
+                throw new RequiredError('targetUsername','Required parameter targetUsername was null or undefined when calling chatSendMessageTargetUsernamePost.');
+            }
+            const localVarPath = `/chat/sendMessage/{TargetUsername}`
+                .replace(`{${"TargetUsername"}}`, encodeURIComponent(String(targetUsername)));
             const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+            const localVarRequestOptions = Object.assign({ method: 'POST', credentials: 'include' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -224,10 +223,14 @@ export const ChatApiFetchParamCreator = function (configuration?: Configuration)
                 localVarQueryParameter["SESSION_ID"] = localVarApiKeyValue;
             }
 
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
             delete localVarUrlObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"any" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(body || {}) : (body || "");
 
             return {
                 url: url.format(localVarUrlObj),
@@ -245,12 +248,12 @@ export const ChatApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Get messages between current user and target user
-         * @param {number} targetUserID 
+         * @param {string} targetUsername 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        chatGetMessagesTargetUserIDGet(targetUserID: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Message>> {
-            const localVarFetchArgs = ChatApiFetchParamCreator(configuration).chatGetMessagesTargetUserIDGet(targetUserID, options);
+        chatGetMessagesTargetUsernameGet(targetUsername: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Message>> {
+            const localVarFetchArgs = ChatApiFetchParamCreator(configuration).chatGetMessagesTargetUsernameGet(targetUsername, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -263,12 +266,13 @@ export const ChatApiFp = function(configuration?: Configuration) {
         },
         /**
          * Send a message to target user
-         * @param {number} targetUserID 
+         * @param {any} body 
+         * @param {string} targetUsername 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        chatSendMessageTargetUserIDPost(targetUserID: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
-            const localVarFetchArgs = ChatApiFetchParamCreator(configuration).chatSendMessageTargetUserIDPost(targetUserID, options);
+        chatSendMessageTargetUsernamePost(body: any, targetUsername: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
+            const localVarFetchArgs = ChatApiFetchParamCreator(configuration).chatSendMessageTargetUsernamePost(body, targetUsername, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -290,21 +294,22 @@ export const ChatApiFactory = function (configuration?: Configuration, fetch?: F
     return {
         /**
          * Get messages between current user and target user
-         * @param {number} targetUserID 
+         * @param {string} targetUsername 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        chatGetMessagesTargetUserIDGet(targetUserID: number, options?: any) {
-            return ChatApiFp(configuration).chatGetMessagesTargetUserIDGet(targetUserID, options)(fetch, basePath);
+        chatGetMessagesTargetUsernameGet(targetUsername: string, options?: any) {
+            return ChatApiFp(configuration).chatGetMessagesTargetUsernameGet(targetUsername, options)(fetch, basePath);
         },
         /**
          * Send a message to target user
-         * @param {number} targetUserID 
+         * @param {any} body 
+         * @param {string} targetUsername 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        chatSendMessageTargetUserIDPost(targetUserID: number, options?: any) {
-            return ChatApiFp(configuration).chatSendMessageTargetUserIDPost(targetUserID, options)(fetch, basePath);
+        chatSendMessageTargetUsernamePost(body: any, targetUsername: string, options?: any) {
+            return ChatApiFp(configuration).chatSendMessageTargetUsernamePost(body, targetUsername, options)(fetch, basePath);
         },
     };
 };
@@ -318,24 +323,25 @@ export const ChatApiFactory = function (configuration?: Configuration, fetch?: F
 export class ChatApi extends BaseAPI {
     /**
      * Get messages between current user and target user
-     * @param {number} targetUserID 
+     * @param {string} targetUsername 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChatApi
      */
-    public chatGetMessagesTargetUserIDGet(targetUserID: number, options?: any) {
-        return ChatApiFp(this.configuration).chatGetMessagesTargetUserIDGet(targetUserID, options)(this.fetch, this.basePath);
+    public chatGetMessagesTargetUsernameGet(targetUsername: string, options?: any) {
+        return ChatApiFp(this.configuration).chatGetMessagesTargetUsernameGet(targetUsername, options)(this.fetch, this.basePath);
     }
 
     /**
      * Send a message to target user
-     * @param {number} targetUserID 
+     * @param {any} body 
+     * @param {string} targetUsername 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ChatApi
      */
-    public chatSendMessageTargetUserIDPost(targetUserID: number, options?: any) {
-        return ChatApiFp(this.configuration).chatSendMessageTargetUserIDPost(targetUserID, options)(this.fetch, this.basePath);
+    public chatSendMessageTargetUsernamePost(body: any, targetUsername: string, options?: any) {
+        return ChatApiFp(this.configuration).chatSendMessageTargetUsernamePost(body, targetUsername, options)(this.fetch, this.basePath);
     }
 
 }
@@ -358,7 +364,7 @@ export const CredsApiFetchParamCreator = function (configuration?: Configuration
             }
             const localVarPath = `/creds/login`;
             const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+            const localVarRequestOptions = Object.assign({ method: 'POST', credentials: 'include' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -389,7 +395,7 @@ export const CredsApiFetchParamCreator = function (configuration?: Configuration
             }
             const localVarPath = `/creds/register`;
             const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+            const localVarRequestOptions = Object.assign({ method: 'POST', credentials: 'include' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -526,7 +532,37 @@ export const SessionsApiFetchParamCreator = function (configuration?: Configurat
         sessionsKeepAlivePut(options: any = {}): FetchArgs {
             const localVarPath = `/sessions/keepAlive`;
             const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+            const localVarRequestOptions = Object.assign({ method: 'PUT', credentials: 'include' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication cookieAuth required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+					? configuration.apiKey("SESSION_ID")
+					: configuration.apiKey;
+                localVarQueryParameter["SESSION_ID"] = localVarApiKeyValue;
+            }
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Logout
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sessionsLogoutDelete(options: any = {}): FetchArgs {
+            const localVarPath = `/sessions/logout`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'DELETE', credentials: 'include' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -556,7 +592,7 @@ export const SessionsApiFetchParamCreator = function (configuration?: Configurat
         sessionsVerifyGet(options: any = {}): FetchArgs {
             const localVarPath = `/sessions/verify`;
             const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarRequestOptions = Object.assign({ method: 'GET', credentials: 'include' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -605,6 +641,23 @@ export const SessionsApiFp = function(configuration?: Configuration) {
             };
         },
         /**
+         * Logout
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sessionsLogoutDelete(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
+            const localVarFetchArgs = SessionsApiFetchParamCreator(configuration).sessionsLogoutDelete(options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response;
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
          * Verify an existing Session ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -639,6 +692,14 @@ export const SessionsApiFactory = function (configuration?: Configuration, fetch
             return SessionsApiFp(configuration).sessionsKeepAlivePut(options)(fetch, basePath);
         },
         /**
+         * Logout
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sessionsLogoutDelete(options?: any) {
+            return SessionsApiFp(configuration).sessionsLogoutDelete(options)(fetch, basePath);
+        },
+        /**
          * Verify an existing Session ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -667,6 +728,16 @@ export class SessionsApi extends BaseAPI {
     }
 
     /**
+     * Logout
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SessionsApi
+     */
+    public sessionsLogoutDelete(options?: any) {
+        return SessionsApiFp(this.configuration).sessionsLogoutDelete(options)(this.fetch, this.basePath);
+    }
+
+    /**
      * Verify an existing Session ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -684,6 +755,42 @@ export class SessionsApi extends BaseAPI {
 export const UsersApiFetchParamCreator = function (configuration?: Configuration) {
     return {
         /**
+         * Accept a friend request
+         * @param {string} targetUsername 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersFriendsAcceptTargetUsernamePost(targetUsername: string, options: any = {}): FetchArgs {
+            // verify required parameter 'targetUsername' is not null or undefined
+            if (targetUsername === null || targetUsername === undefined) {
+                throw new RequiredError('targetUsername','Required parameter targetUsername was null or undefined when calling usersFriendsAcceptTargetUsernamePost.');
+            }
+            const localVarPath = `/users/friends/accept/{TargetUsername}`
+                .replace(`{${"TargetUsername"}}`, encodeURIComponent(String(targetUsername)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'POST', credentials: 'include' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication cookieAuth required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+					? configuration.apiKey("SESSION_ID")
+					: configuration.apiKey;
+                localVarQueryParameter["SESSION_ID"] = localVarApiKeyValue;
+            }
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Add new friend
          * @param {string} targetUsername 
          * @param {*} [options] Override http request option.
@@ -697,7 +804,7 @@ export const UsersApiFetchParamCreator = function (configuration?: Configuration
             const localVarPath = `/users/friends/add/{TargetUsername}`
                 .replace(`{${"TargetUsername"}}`, encodeURIComponent(String(targetUsername)));
             const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+            const localVarRequestOptions = Object.assign({ method: 'POST', credentials: 'include' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -727,7 +834,7 @@ export const UsersApiFetchParamCreator = function (configuration?: Configuration
         usersFriendsGet(options: any = {}): FetchArgs {
             const localVarPath = `/users/friends`;
             const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarRequestOptions = Object.assign({ method: 'GET', credentials: 'include' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -757,7 +864,7 @@ export const UsersApiFetchParamCreator = function (configuration?: Configuration
         usersFriendsRequestsGet(options: any = {}): FetchArgs {
             const localVarPath = `/users/friends/requests`;
             const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarRequestOptions = Object.assign({ method: 'GET', credentials: 'include' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -792,7 +899,7 @@ export const UsersApiFetchParamCreator = function (configuration?: Configuration
             }
             const localVarPath = `/users/friends/updateRelationship`;
             const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+            const localVarRequestOptions = Object.assign({ method: 'PUT', credentials: 'include' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -826,7 +933,7 @@ export const UsersApiFetchParamCreator = function (configuration?: Configuration
         usersMeGet(options: any = {}): FetchArgs {
             const localVarPath = `/users/me`;
             const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarRequestOptions = Object.assign({ method: 'GET', credentials: 'include' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -857,6 +964,24 @@ export const UsersApiFetchParamCreator = function (configuration?: Configuration
  */
 export const UsersApiFp = function(configuration?: Configuration) {
     return {
+        /**
+         * Accept a friend request
+         * @param {string} targetUsername 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersFriendsAcceptTargetUsernamePost(targetUsername: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
+            const localVarFetchArgs = UsersApiFetchParamCreator(configuration).usersFriendsAcceptTargetUsernamePost(targetUsername, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response;
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
         /**
          * Add new friend
          * @param {string} targetUsername 
@@ -954,6 +1079,15 @@ export const UsersApiFp = function(configuration?: Configuration) {
 export const UsersApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
     return {
         /**
+         * Accept a friend request
+         * @param {string} targetUsername 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersFriendsAcceptTargetUsernamePost(targetUsername: string, options?: any) {
+            return UsersApiFp(configuration).usersFriendsAcceptTargetUsernamePost(targetUsername, options)(fetch, basePath);
+        },
+        /**
          * Add new friend
          * @param {string} targetUsername 
          * @param {*} [options] Override http request option.
@@ -1005,6 +1139,17 @@ export const UsersApiFactory = function (configuration?: Configuration, fetch?: 
  * @extends {BaseAPI}
  */
 export class UsersApi extends BaseAPI {
+    /**
+     * Accept a friend request
+     * @param {string} targetUsername 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UsersApi
+     */
+    public usersFriendsAcceptTargetUsernamePost(targetUsername: string, options?: any) {
+        return UsersApiFp(this.configuration).usersFriendsAcceptTargetUsernamePost(targetUsername, options)(this.fetch, this.basePath);
+    }
+
     /**
      * Add new friend
      * @param {string} targetUsername 
