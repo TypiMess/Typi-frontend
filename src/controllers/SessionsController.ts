@@ -16,8 +16,8 @@ export default class SessionsController {
         }
         catch (e)
         {
-            let result = e as Response;
-            switch (result.status)
+            let response = e as Response;
+            switch (response.status)
             {
                 case 404:
                     throw new NotFoundError();

@@ -1,47 +1,49 @@
-export class UnknownError extends Error {    
+class DummyError extends Error {
+    constructor(msg: string)
+    {
+        super(msg);
+        this.name = this.constructor.name;
+    }
+}
+
+export class UnknownError extends DummyError {    
     constructor()
     {
         super("Unknown error. Please contact administrator regarding this issue.");
-        this.name = "UnknownError";
     }
 }
 
-export class UnauthorizedError extends Error {    
+export class UnauthorizedError extends DummyError {    
     constructor()
     {
         super("You are unauthorized.");
-        this.name = "UnauthorizedError";
     }
 }
 
-export class InvalidError extends Error {    
+export class InvalidError extends DummyError {    
     constructor()
     {
         super("Input is invalid.");
-        this.name = "InvalidError";
     }
 }
 
-export class NotFoundError extends Error {    
+export class NotFoundError extends DummyError {    
     constructor()
     {
         super("Not found.");
-        this.name = "NotFoundError";
     }
 }
 
-export class ForbiddenError extends Error {    
+export class ForbiddenError extends DummyError {    
     constructor()
     {
         super("You have no permission.");
-        this.name = "ForbiddenError";
     }
 }
 
-export class DuplicateError extends Error {    
+export class DuplicateError extends DummyError {    
     constructor()
     {
         super("Entry already exists.");
-        this.name = "DuplicateError";
     }
 }

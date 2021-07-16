@@ -54,7 +54,7 @@ export default class CredentialsController {
         }
         catch (e)
         {
-            let error = <Response>e;
+            let error = e as Response;
             
             switch (error.status)
             {

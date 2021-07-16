@@ -56,7 +56,7 @@ export default class CurrentUserController {
         }
         catch (e)
         {
-            let response = <Response>e;
+            let response = e as Response;
             
             console.error(`${response.status}: Error updating current user.`);
             
