@@ -1,9 +1,27 @@
 import React from "react";
 import CurrentUserController from "../../controllers/CurrentUserController";
+import User from "../../models/User";
 import FriendsList from "./sidebar-components/FriendsList";
 import OptionsMenu from "./sidebar-components/OptionsMenu";
 
-export default class Sidebar extends React.Component {
+interface IStates {
+    currentUser?: User
+}
+
+export default class Sidebar extends React.Component<{}, IStates> {
+    constructor(props: {})
+    {
+        super(props);
+        
+        this.state = {
+            currentUser: undefined
+        }
+    }
+    
+    componentDidMount() {
+        this.setState({ currentUser: CurrentUserController.Instance.CurrentUser });
+    }
+    
     render() {
         return (
             <>
@@ -11,8 +29,8 @@ export default class Sidebar extends React.Component {
                     <img src="../assets/typi-logo.png" style={{ height: "40px" }}/><h2>ypi</h2>
                 </div>
                 <div className="d-flex align-items-center">
-                    <div className="mr-auto">
-                        Hi <b>{ CurrentUserController.Instance.CurrentUser.Username }</b>.
+                    <div className="me-auto">
+                        Hi <b>{ this.state.currentUser?.Username }</b>.
                     </div>
                     <div className="">
                         <i className="bi-person-plus-fill"></i>

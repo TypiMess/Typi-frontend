@@ -93,31 +93,31 @@ export interface Message {
      * @type {number}
      * @memberof Message
      */
-    sender?: number;
+    Sender?: number;
     /**
      * 
      * @type {number}
      * @memberof Message
      */
-    receiver?: number;
+    Receiver?: number;
     /**
      * 
      * @type {string}
      * @memberof Message
      */
-    content?: string;
+    Content?: string;
     /**
      * 
      * @type {string}
      * @memberof Message
      */
-    keySender?: string;
+    Keysender?: string;
     /**
      * 
      * @type {string}
      * @memberof Message
      */
-    keyReceiver?: string;
+    Keyreceiver?: string;
     /**
      * 
      * @type {string}
@@ -129,13 +129,13 @@ export interface Message {
      * @type {string}
      * @memberof Message
      */
-    authTag?: string;
+    Authtag?: string;
     /**
      * 
      * @type {number}
      * @memberof Message
      */
-    sendTime?: number;
+    Sendtime?: number;
 }
 /**
  * 
@@ -148,7 +148,7 @@ export interface User {
      * @type {string}
      * @memberof User
      */
-    username: string;
+    Username: string;
 }
 /**
  * ChatApi - fetch parameter creator

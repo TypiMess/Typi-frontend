@@ -19,9 +19,9 @@ class App extends React.Component<{}, IStates> {
     }
     
     componentDidMount() {
+        CurrentUserController.AddOnReadyListener(this, (component: React.Component) => component.setState({ isLoggedIn: true }));
         SessionsController.VerifySession().then(valid => {
             if (valid) {
-                CurrentUserController.AddOnReadyListener(this, function(component: React.Component) { component.setState({ isLoggedIn: true }) });
                 CurrentUserController.Update().catch(error => console.error(error));
             }
         });

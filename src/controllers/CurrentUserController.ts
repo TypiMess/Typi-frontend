@@ -37,9 +37,9 @@ export default class CurrentUserController {
             let getFriendsRes = await this._userAPI.usersFriendsGet();
             let getFriendRequestsRes = await this._userAPI.usersFriendsRequestsGet();
             
-            let currentUser = new User(getCurrentUserRes.username);
-            let listFriends = getFriendsRes.map(u => { return new User(u.username) });
-            let listFriendRequests = getFriendRequestsRes.map(u => { return new User(u.username) });
+            let currentUser = new User(getCurrentUserRes.Username);
+            let listFriends = getFriendsRes.map(u => { return new User(u.Username) });
+            let listFriendRequests = getFriendRequestsRes.map(u => { return new User(u.Username) });
             
             if (this._instance === undefined)
             {
