@@ -6,7 +6,7 @@ import APIConfig from "./APIConfig";
 export default class CurrentUserController {
     private static _instance: CurrentUserController;
     private static _userAPI = new UsersApi(APIConfig);
-    private static _onReadyCallbacks: {owner: React.Component, callback: Function}[] = [];
+    private static _onReadyCallbacks: Function[] = [];
     
     private _currentUser: User;
     private _friends: User[];
@@ -52,9 +52,7 @@ export default class CurrentUserController {
                 this._instance._friendRequests = listFriendRequests;
             }
             
-            this._onReadyCallbacks.forEach(entry => {
-                entry.callback(entry.owner);
-            });
+            this._onReadyCallbacks.forEach(callback => callback());
         }
         catch (e)
         {
@@ -78,8 +76,8 @@ export default class CurrentUserController {
      * @param owner an instance of a {@link React.Component}
      * @param callback a function to call when instance is ready
      */
-    static AddOnReadyListener(owner: React.Component, callback: Function)
+    static AddOnReadyListener(callback: Function)
     {
-        this._onReadyCallbacks.push({ owner, callback });
+        this._onReadyCallbacks.push(callback);
     }
 }

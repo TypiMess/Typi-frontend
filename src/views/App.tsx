@@ -18,13 +18,12 @@ class App extends React.Component<{}, IStates> {
             isLoading: true
         }
 
+        this.handleOnLogin = this.handleOnLogin.bind(this);
         this.handleOnLogout = this.handleOnLogout.bind(this);
     }
 
     componentDidMount() {
-        CurrentUserController.AddOnReadyListener(this, (component: React.Component) => {
-            component.setState({ isLoggedIn: true });
-        });
+        CurrentUserController.AddOnReadyListener(this.handleOnLogin);
 
         SessionsController.VerifySession().then(valid => {
             if (valid) {
@@ -36,6 +35,11 @@ class App extends React.Component<{}, IStates> {
                 this.setState({ isLoading: false });
             }
         });
+    }
+    
+    handleOnLogin()
+    {
+        this.setState({ isLoggedIn: true });
     }
 
     handleOnLogout() {
