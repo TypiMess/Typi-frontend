@@ -1,9 +1,7 @@
 import React, { ChangeEvent, FormEvent } from "react";
 import CredentialsController from "../../controllers/CredentialsController";
 import CurrentUserController from "../../controllers/CurrentUserController";
-import InvalidError from "../../errors/InvalidError";
-import NotFoundError from "../../errors/NotFoundError";
-import UnauthorizedError from "../../errors/UnauthorizedError";
+import { InvalidError, NotFoundError, UnauthorizedError } from "../../errors/Errors";
 import Alert from "../Alert";
 
 interface IStates {
@@ -44,7 +42,7 @@ export default class Login extends React.Component<{}, IStates> {
         event.preventDefault();
 
         CredentialsController.Instance.Login(this.state.username, this.state.password)
-            .then(result => {
+            .then(() => {
                 CurrentUserController.Update().catch(error => {
                     if (error instanceof UnauthorizedError) {
                         this.setState({ alertText: "Invalid session. Please enable cookies for this site." });
@@ -71,7 +69,8 @@ export default class Login extends React.Component<{}, IStates> {
         return (
             <div className="container rounded shadow p-3 bg-white">
                 <h2 className="text-center">Login</h2>
-                {this.state.alertText ? <Alert onClose={this.onCloseAlert}>{this.state.alertText}</Alert> : <></>}
+                { this.state.alertText ? <Alert onClose={this.onCloseAlert}>{this.state.alertText}</Alert> : <></> }
+                
                 <form onSubmit={this.handleLoginForm}>
                     <div className="mb-3">
                         <label className="form-label" htmlFor="username">Username:</label>

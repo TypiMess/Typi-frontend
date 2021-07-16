@@ -1,8 +1,5 @@
 import { CredsApi } from "../../sdk";
-import DuplicateError from "../errors/DuplicateError";
-import InvalidError from "../errors/InvalidError";
-import NotFoundError from "../errors/NotFoundError";
-import UnknownError from "../errors/UnknownError";
+import { NotFoundError, InvalidError, UnknownError, DuplicateError } from "../errors/Errors";
 import APIConfig from "./APIConfig";
 
 export default class CredentialsController {

@@ -1,6 +1,5 @@
 import { UsersApi } from "../../sdk";
-import UnauthorizedError from "../errors/UnauthorizedError";
-import UnknownError from "../errors/UnknownError";
+import { UnauthorizedError, UnknownError } from "../errors/Errors";
 import User from "../models/User";
 import APIConfig from "./APIConfig";
 
