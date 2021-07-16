@@ -54,7 +54,7 @@ export default class Register extends React.Component<{}, IStates> {
             })
             .catch(error => {
                 if (error instanceof DuplicateError) {
-                    this.setState({ alertText: "The username already exists. Please choose another." });
+                    this.setState({ alertText: "The username is already taken. Please choose another." });
                 }
                 else if (error instanceof InvalidError) {
                     this.setState({ alertText: "The username or password is invalid. Please check again." });

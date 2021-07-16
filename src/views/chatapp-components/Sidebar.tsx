@@ -32,12 +32,12 @@ export default class Sidebar extends React.Component<{}, IStates> {
                     <div className="me-auto">
                         Hi <b>{ this.state.currentUser?.Username }</b>.
                     </div>
-                    <div className="">
+                    <div className="button_icon">
                         <i className="bi-person-plus-fill"></i>
                     </div>
                     <div className="ms-1">
-                        <div className="$style.button_icon">
-                            <i className="three-dots"></i>
+                        <div className="button_icon">
+                            <i className="bi-three-dots"></i>
                         </div>
                         <OptionsMenu />
                     </div>

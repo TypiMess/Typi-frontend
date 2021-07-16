@@ -1,0 +1,48 @@
+#messageInput {
+    box-shadow: none;
+    background-color: #f3f3f3;
+    border: none;
+    display: inline-block;
+    width: 100px;
+}
+
+#sendButton {
+    cursor: pointer;
+    color: blue;
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    transition: background-color 0.1s linear;
+
+    &:hover {
+        background-color: #f3f3f3;
+    }
+    
+    &:active {
+        background-color: #e5e5e5;
+    }
+    
+    svg {
+        width: 26px;
+        height: 26px;
+    }
+}
+
+.outgoing_msg {
+    background-color: #007bff;
+    color: white;
+}
+
+.incoming_msg {
+    background-color: #eee;
+}
+
+.outgoing_msg, .incoming_msg {
+    border-radius: 18px;
+    padding: 7px 12px 8px 12px;
+    max-width: 90%;
+}
+
+#optionsMenu {
+    z-index: 1;
+}

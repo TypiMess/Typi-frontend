@@ -1,5 +1,6 @@
 import APIConfig from "./APIConfig";
 import { SessionsApi } from "../../sdk";
+import { NotFoundError, UnknownError } from "../errors/Errors";
 
 export default class SessionsController {
     private static _sessionsAPI = new SessionsApi(APIConfig);
@@ -7,9 +8,23 @@ export default class SessionsController {
     /**
      * Send a request to extend the current session TTL
      */
-    public static SendKeepAlive()
+    public static async SendKeepAlive()
     {
-        this._sessionsAPI.sessionsKeepAlivePut();
+        try
+        {
+            await this._sessionsAPI.sessionsKeepAlivePut();
+        }
+        catch (e)
+        {
+            let result = e as Response;
+            switch (result.status)
+            {
+                case 404:
+                    throw new NotFoundError();
+                default:
+                    throw new UnknownError();
+            }
+        }
     }
     
     /**

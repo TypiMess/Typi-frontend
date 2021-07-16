@@ -1,12 +1,38 @@
 import React from "react";
 import CurrentUserController from "../controllers/CurrentUserController";
+import SessionsController from "../controllers/SessionsController";
+import { NotFoundError } from "../errors/Errors";
 import '../styles/chatapp.scss'
 import Chatbox from "./chatapp-components/Chatbox";
 import Sidebar from "./chatapp-components/Sidebar";
 
-export default class ChatApp extends React.Component {
+interface IProps {
+    onLogout: Function
+}
+
+export default class ChatApp extends React.Component<IProps> {
+    constructor(props: IProps)
+    {
+        super(props);
+    }
+    
     componentDidMount() {
-        CurrentUserController.Update();
+        
+        let sendKeepAliveInterval = setInterval(() => {
+            SessionsController.SendKeepAlive().catch(err => {
+                clearInterval(sendKeepAliveInterval);
+                
+                if (err instanceof NotFoundError)
+                {
+                    this.props.onLogout();
+                }
+                else
+                {
+                    
+                }
+            });
+        }, 60000);
+        
     }
     
     render() {

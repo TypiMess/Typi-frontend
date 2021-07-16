@@ -16,6 +16,8 @@ class App extends React.Component<{}, IStates> {
         this.state = {
             isLoggedIn: false
         }
+        
+        this.handleOnLogout = this.handleOnLogout.bind(this);
     }
     
     componentDidMount() {
@@ -26,13 +28,18 @@ class App extends React.Component<{}, IStates> {
             }
         });
     }
+    
+    handleOnLogout()
+    {
+        this.setState({ isLoggedIn: false });
+    }
 
     render() {
         return (
             <div className="App">
                 {
                     this.state.isLoggedIn ?
-                        <ChatApp /> :
+                        <ChatApp onLogout={this.handleOnLogout}/> :
                         <Homepage />
                 }
             </div>

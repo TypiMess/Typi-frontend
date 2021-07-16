@@ -1,6 +1,7 @@
 import React from "react";
 import CurrentUserController from "../../../controllers/CurrentUserController";
 import Avatar from "../Avatar";
+import MenuEntry from "../MenuEntry";
 
 export default class FriendsList extends React.Component {
     render() {
@@ -9,18 +10,22 @@ export default class FriendsList extends React.Component {
         
         return (
             <>
-                <div className="d-flex p-2 rounded align-items-center justify-content-between + $style.menu_entry" v-if="pendingFriends.length > 0" onClick={e => {}}>
-                    <b>Pending requests</b>
-                    <span className="badge bg-info">{ friendRequests.length }</span>
-                </div>
+                {
+                    friendRequests.length > 0 &&
+                    
+                    <MenuEntry>
+                        <b>Pending requests</b>
+                        <span className="ms-auto badge bg-info">{ friendRequests.length }</span>
+                    </MenuEntry>
+                }
                 
                 {
                     friends.map(friend => {
                         return (
-                            <div className="d-flex p-2 rounded align-items-center + $style.menu_entry" onClick={e => {}}>
-                                <div className="d-inline-flex justify-content-center mr-3"><Avatar text={friend.Username.charAt(0)}></Avatar></div>
+                            <MenuEntry key={friend.Username}>
+                                <div className="d-inline-block me-3"><Avatar text={friend.Username.charAt(0)}></Avatar></div>
                                 <div className="d-inline-block">{ friend.Username }</div>
-                            </div>
+                            </MenuEntry>
                         )
                     })
                 }
