@@ -1,6 +1,6 @@
 import React, { ChangeEvent, MouseEvent } from "react";
 import RelationshipsController from "../../../controllers/RelationshipsController";
-import { UnauthorizedError } from "../../../errors/Errors";
+import { ForbiddenError, UnauthorizedError } from "../../../errors/Errors";
 import Modal from "../Modal";
 
 interface IStates {
@@ -29,9 +29,13 @@ export default class AddFriendModal extends React.Component<{}, IStates> {
         RelationshipsController.Instance.SendFriendRequest(this.state.targetUsername).catch(error => {
             if (error instanceof UnauthorizedError)
             {
+                // TODO: Show notification
+            }
+            else if (error instanceof ForbiddenError)
+            {
                 
             }
-        })
+        });
     }
 
     render() {
@@ -39,7 +43,7 @@ export default class AddFriendModal extends React.Component<{}, IStates> {
             <Modal title="Add friend" showCloseButton={true} additionalFooter={
                 <button className="btn btn-primary" onClick={this.handleSendRequestClick}>Send request</button>
             }>
-                <label htmlFor="">Their username:</label>
+                <label className="form-label" htmlFor="targetUsername">Their username:</label>
                 <input className="form-control" id="targetUsername" name="targetUsername" onChange={this.handleTargetUsernameChange} />
             </Modal>
         )

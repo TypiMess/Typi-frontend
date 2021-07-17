@@ -25,7 +25,7 @@ class App extends React.Component<{}, IStates> {
     componentDidMount() {
         CurrentUserController.AddOnReadyListener(this.handleOnLogin);
 
-        SessionsController.VerifySession().then(valid => {
+        SessionsController.Instance.VerifySession().then(valid => {
             if (valid) {
                 CurrentUserController.Update()
                     .catch(error => console.error(error))

@@ -1,5 +1,5 @@
 import { UsersApi } from "../../sdk";
-import { UnauthorizedError, UnknownError } from "../errors/Errors";
+import { CodeToError } from "../errors/Errors";
 import User from "../models/User";
 import APIConfig from "./APIConfig";
 
@@ -60,14 +60,7 @@ export default class CurrentUserController {
             
             console.error(`${response.status}: Error updating current user.`);
             
-            if (response.status == 401)
-            {
-                throw new UnauthorizedError();
-            }
-            else
-            {
-                throw new UnknownError();
-            }
+            throw CodeToError(response.status);
         }
     }
     

@@ -31,7 +31,7 @@ export default class ChatApp extends React.Component<IProps, IStates> {
     componentDidMount() {
         
         let sendKeepAliveInterval = setInterval(() => {
-            SessionsController.SendKeepAlive().catch(err => {
+            SessionsController.Instance.SendKeepAlive().catch(err => {
                 clearInterval(sendKeepAliveInterval);
                 
                 if (err instanceof NotFoundError)
@@ -40,7 +40,7 @@ export default class ChatApp extends React.Component<IProps, IStates> {
                 }
                 else
                 {
-                    
+                    // TODO: Show notification
                 }
             });
         }, 60000);

@@ -1,29 +1,32 @@
 import APIConfig from "./APIConfig";
 import { SessionsApi } from "../../sdk";
-import { NotFoundError, UnknownError } from "../errors/Errors";
+import { CodeToError } from "../errors/Errors";
 
 export default class SessionsController {
+    private static _instance: SessionsController;
     private static _sessionsAPI = new SessionsApi(APIConfig);
+    
+    private constructor() {
+        SessionsController._instance = this;
+    }
+    
+    static get Instance() {
+        return this._instance || new SessionsController();
+    }
     
     /**
      * Send a request to extend the current session TTL
      */
-    public static async SendKeepAlive()
+    async SendKeepAlive()
     {
         try
         {
-            await this._sessionsAPI.sessionsKeepAlivePut();
+            await SessionsController._sessionsAPI.sessionsKeepAlivePut();
         }
         catch (e)
         {
             let response = e as Response;
-            switch (response.status)
-            {
-                case 404:
-                    throw new NotFoundError();
-                default:
-                    throw new UnknownError();
-            }
+            throw CodeToError(response.status);
         }
     }
     
@@ -31,11 +34,11 @@ export default class SessionsController {
      * Send a request to check if current session ID is valid
      * @returns true if session is valid, false otherwise
      */
-    public static async VerifySession(): Promise<boolean>
+    async VerifySession(): Promise<boolean>
     {
         try
         {
-            await this._sessionsAPI.sessionsVerifyGet();
+            await SessionsController._sessionsAPI.sessionsVerifyGet();
             // response throws an error if invalid
             // Session ID valid
             return true;

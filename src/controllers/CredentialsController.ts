@@ -1,12 +1,14 @@
 import { CredsApi } from "../../sdk";
-import { NotFoundError, InvalidError, UnknownError, DuplicateError } from "../errors/Errors";
+import { CodeToError } from "../errors/Errors";
 import APIConfig from "./APIConfig";
 
 export default class CredentialsController {
     private static _instance: CredentialsController;
     private static _credsAPI = new CredsApi(APIConfig);
     
-    private constructor() {}
+    private constructor() {
+        CredentialsController._instance = this;
+    }
     
     static get Instance() { return this._instance || new CredentialsController() }
     
@@ -29,17 +31,9 @@ export default class CredentialsController {
         }
         catch (e)
         {
-            let error = <Response>e;
+            let response = e as Response;
             
-            switch (error.status)
-            {
-                case 404:
-                    throw new NotFoundError();
-                case 406:
-                    throw new InvalidError();
-                default:
-                    throw new UnknownError();
-            }
+            throw CodeToError(response.status);
         }
     }
     
@@ -54,17 +48,9 @@ export default class CredentialsController {
         }
         catch (e)
         {
-            let error = e as Response;
+            let response = e as Response;
             
-            switch (error.status)
-            {
-                case 406:
-                    throw new InvalidError();
-                case 409:
-                    throw new DuplicateError();
-                default:
-                    throw new UnknownError();
-            }
+            throw CodeToError(response.status);
         }
     }
 } 
