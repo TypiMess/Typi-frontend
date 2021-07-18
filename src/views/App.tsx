@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Homepage from './Homepage'
 import ChatApp from './ChatApp'
 import SessionsController from '../controllers/SessionsController';
 import CurrentUserController from '../controllers/CurrentUserController';
+import NotificationContainer from './notification-components/NotificationContainer';
+import '../styles/app.scss'
 
 interface IStates {
     isLoggedIn: boolean,
@@ -10,8 +12,12 @@ interface IStates {
 }
 
 class App extends React.Component<{}, IStates> {
+    private static _instance: App;
+
     constructor(props: {}) {
         super(props);
+
+        App._instance = this;
 
         this.state = {
             isLoggedIn: false,
@@ -20,10 +26,19 @@ class App extends React.Component<{}, IStates> {
 
         this.handleOnLogin = this.handleOnLogin.bind(this);
         this.handleOnLogout = this.handleOnLogout.bind(this);
+        this.verifySession = this.verifySession.bind(this);
     }
 
     componentDidMount() {
         CurrentUserController.AddOnReadyListener(this.handleOnLogin);
+
+        this.verifySession();
+    }
+
+    verifySession() {
+        this.setState({
+            isLoggedIn: false
+        });
 
         SessionsController.Instance.VerifySession().then(valid => {
             if (valid) {
@@ -36,9 +51,12 @@ class App extends React.Component<{}, IStates> {
             }
         });
     }
-    
-    handleOnLogin()
-    {
+
+    static CheckSession() {
+        this._instance.verifySession();
+    }
+
+    handleOnLogin() {
         this.setState({ isLoggedIn: true });
     }
 
@@ -57,6 +75,7 @@ class App extends React.Component<{}, IStates> {
                                 <ChatApp onLogout={this.handleOnLogout} /> :
                                 <Homepage />
                         }
+                        <NotificationContainer />
                     </div>
                 }
             </>
