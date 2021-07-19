@@ -24,9 +24,9 @@ class App extends React.Component<{}, IStates> {
             isLoading: true
         }
 
+        this.verifySession = this.verifySession.bind(this);
         this.handleOnLogin = this.handleOnLogin.bind(this);
         this.handleOnLogout = this.handleOnLogout.bind(this);
-        this.verifySession = this.verifySession.bind(this);
     }
 
     componentDidMount() {

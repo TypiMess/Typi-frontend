@@ -4,6 +4,7 @@ import { NotFoundError } from "../errors/Errors";
 import '../styles/chatapp.scss'
 import Chatbox from "./chatapp-components/Chatbox";
 import Sidebar from "./chatapp-components/Sidebar";
+import NotificationContainer from "./notification-components/NotificationContainer";
 
 interface IProps {
     onLogout: Function
@@ -31,12 +32,11 @@ export default class ChatApp extends React.Component<IProps, IStates> {
             SessionsController.Instance.SendKeepAlive().catch(err => {
                 clearInterval(sendKeepAliveInterval);
 
-                if (err instanceof NotFoundError) {
-                    this.props.onLogout();
+                if (!(err instanceof NotFoundError)) {
+                    NotificationContainer.AddNotification({ title: "Server error", type: "error", body: <>An error has occured, please try again.</> })
                 }
-                else {
-                    // TODO: Show notification
-                }
+
+                this.props.onLogout();
             });
         }, 60000);
     }

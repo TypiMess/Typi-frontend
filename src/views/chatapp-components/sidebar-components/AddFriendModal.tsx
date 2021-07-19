@@ -53,11 +53,11 @@ export default class AddFriendModal extends React.Component<{}, IStates> {
 
     render() {
         return (
-            <Modal title="Add friend" showCloseButton={true} additionalFooter={
+            <Modal title="Add friend" additionalFooter={
                 <button className="btn btn-primary" onClick={this.handleSendRequestClick}>Send request</button>
             }>
                 <label className="form-label" htmlFor="targetUsername">Their username:</label>
-                <input className="form-control" id="targetUsername" name="targetUsername" value={this.state.targetUsername} onChange={this.handleTargetUsernameChange} />
+                <input className="form-control" pattern="(\w|\d){3,32}" id="targetUsername" name="targetUsername" value={this.state.targetUsername} onChange={this.handleTargetUsernameChange} />
             </Modal>
         )
     }

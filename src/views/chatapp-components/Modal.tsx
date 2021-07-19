@@ -4,12 +4,17 @@ import ChatApp from "../ChatApp";
 
 interface IProps {
     title: string,
-    showCloseButton?: boolean,
-    closeButtonText?: string,
+    showCloseButton: boolean,
+    closeButtonText: string,
     additionalFooter?: ReactElement
 }
 
 export default class Modal extends React.Component<IProps> {
+    static defaultProps = {
+        showCloseButton: true,
+        closeButtonText: "Close"
+    }
+    
     private modalRef: React.RefObject<HTMLDivElement>;
     
     constructor(props: IProps)
@@ -52,7 +57,7 @@ export default class Modal extends React.Component<IProps> {
                                 this.props.additionalFooter
                             }
                             {
-                                this.props.showCloseButton && <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">{ this.props.closeButtonText ?? "Close" }</button>
+                                this.props.showCloseButton && <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">{ this.props.closeButtonText }</button>
                             }
                         </div>
                     </div>
