@@ -17,9 +17,11 @@
     "portable-fetch": "^3.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-idle-timer": "^4.6.4",
     "url": "^0.11.0"
   },
   "devDependencies": {
+    "@babel/runtime": "^7.14.6",
     "@types/bootstrap": "^5.0.17",
     "@types/react": "^17.0.14",
     "@types/react-dom": "^17.0.9",

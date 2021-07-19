@@ -49,4 +49,15 @@ export default class SessionsController {
             return false;
         }
     }
+    
+    async Logout() {
+        try
+        {
+            await SessionsController._sessionsAPI.sessionsLogoutDelete();
+        }
+        catch
+        {
+            console.log("Session already expired");
+        }
+    }
 }

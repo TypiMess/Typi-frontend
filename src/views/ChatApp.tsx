@@ -1,10 +1,8 @@
 import React, { ReactElement } from "react";
-import SessionsController from "../controllers/SessionsController";
-import { NotFoundError } from "../errors/Errors";
 import '../styles/chatapp.scss'
 import Chatbox from "./chatapp-components/Chatbox";
 import Sidebar from "./chatapp-components/Sidebar";
-import NotificationContainer from "./notification-components/NotificationContainer";
+import KeepAliveHelper from "./KeepAliveHelper";
 
 interface IProps {
     onLogout: Function
@@ -27,20 +25,6 @@ export default class ChatApp extends React.Component<IProps, IStates> {
         }
     }
 
-    componentDidMount() {
-        let sendKeepAliveInterval = setInterval(() => {
-            SessionsController.Instance.SendKeepAlive().catch(err => {
-                clearInterval(sendKeepAliveInterval);
-
-                if (!(err instanceof NotFoundError)) {
-                    NotificationContainer.AddNotification({ title: "Server error", type: "error", body: <>An error has occured, please try again.</> })
-                }
-
-                this.props.onLogout();
-            });
-        }, 60000);
-    }
-
     static ShowModal(modal: ReactElement) {
         ChatApp._instance.setState({
             currentModal: modal
@@ -56,6 +40,8 @@ export default class ChatApp extends React.Component<IProps, IStates> {
     render() {
         return (
             <>
+                <KeepAliveHelper onExpire={this.props.onLogout}/>
+                
                 <div className="container-fluid">
                     <div className="row flex-grow-1">
                         <div className="col-2 p-3 border-right bg-white">
