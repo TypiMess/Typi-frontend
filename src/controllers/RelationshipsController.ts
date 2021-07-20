@@ -6,7 +6,7 @@ export default class RelationshipsController {
     private static _instance: RelationshipsController;
     private static _usersAPI = new UsersApi(APIConfig);
 
-    constructor() {
+    private constructor() {
         RelationshipsController._instance = this;
     }
 

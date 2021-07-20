@@ -1,3 +1,9 @@
+#chatbox {
+    height: 100vh;
+    max-height: 100vh;
+    min-height: 100vh;
+}
+
 #messageInput {
     box-shadow: none;
     background-color: #f3f3f3;
@@ -41,8 +47,4 @@
     border-radius: 18px;
     padding: 7px 12px 8px 12px;
     max-width: 90%;
-}
-
-#optionsMenu {
-    z-index: 1;
 }

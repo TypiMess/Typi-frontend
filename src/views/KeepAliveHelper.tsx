@@ -47,7 +47,13 @@ export default class KeepAliveHelper extends React.Component<IProps> {
     
     handleOnIdle() {
         clearInterval(this.sendKeepAliveInterval);
+        this.sendKeepAliveInterval = 0;
         SessionsController.Instance.Logout().then(() => this.props.onExpire());
+    }
+    
+    componentWillUnmount() {
+        clearInterval(this.sendKeepAliveInterval);
+        this.sendKeepAliveInterval = 0;
     }
     
     render() {

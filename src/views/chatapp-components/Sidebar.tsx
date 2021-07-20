@@ -6,7 +6,7 @@ import FriendsList from "./sidebar-components/FriendsList";
 import OptionsMenu from "./sidebar-components/OptionsMenu";
 
 interface IStates {
-    currentUser?: User
+    currentUser: User
 }
 
 export default class Sidebar extends React.Component<{}, IStates> {
@@ -15,12 +15,8 @@ export default class Sidebar extends React.Component<{}, IStates> {
         super(props);
         
         this.state = {
-            currentUser: undefined
+            currentUser: CurrentUserController.Instance.CurrentUser
         }
-    }
-    
-    componentDidMount() {
-        this.setState({ currentUser: CurrentUserController.Instance.CurrentUser });
     }
     
     render() {
@@ -31,7 +27,7 @@ export default class Sidebar extends React.Component<{}, IStates> {
                 </div>
                 <div className="d-flex align-items-center">
                     <div className="me-auto">
-                        Hi <b>{ this.state.currentUser?.Username }</b>.
+                        Hi <strong>{ this.state.currentUser?.Username }</strong>.
                     </div>
                     <AddFriendButton/>
                     <div className="ms-1">
