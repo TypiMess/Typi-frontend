@@ -15,8 +15,6 @@ export default class NotificationContainer extends React.Component<{}, IStates> 
     private static _instance: NotificationContainer;
 
     private style: React.CSSProperties = {
-        bottom: "1.5rem",
-        width: "100%",
         zIndex: 1059
     }
 
@@ -46,7 +44,7 @@ export default class NotificationContainer extends React.Component<{}, IStates> 
 
     render() {
         return (
-            <div className="toast-container position-fixed d-flex flex-column align-items-center" style={this.style}>
+            <div className="toast-container position-fixed top-0 end-0 p-3" style={this.style}>
                 {
                     this.state.notifications.map(noti => {
                         return (
