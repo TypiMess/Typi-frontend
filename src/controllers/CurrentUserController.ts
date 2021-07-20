@@ -4,7 +4,7 @@ import User from "../models/User";
 import APIConfig from "./APIConfig";
 
 export default class CurrentUserController {
-    private static _instance: CurrentUserController;
+    private static _instance?: CurrentUserController;
     private static _userAPI = new UsersApi(APIConfig);
     private static _onReadyCallbacks: Function[] = [];
 
@@ -19,14 +19,29 @@ export default class CurrentUserController {
     }
 
     static get Instance() { return CurrentUserController._instance }
+
+    /**
+     * Return true if an instance has been created/User has logged in
+     */
+    static get Initialized() {
+        return this._instance instanceof CurrentUserController;
+    }
+
+    /**
+     * Delete saved instance
+     */
+    static DestroyInstance() {
+        delete this._instance;
+    }
+    
     get CurrentUser() { return this._currentUser }
     get Friends() { return this._friends }
     get FriendRequests() { return this._friendRequests }
 
     /**
      * Update current user info and friends info
-     * @throws {UnauthorizedError} if user is not logged in
-     * @throws {UnknownError} for other errors
+     * @throws a {@link UnauthorizedError} if user is not logged in
+     * @throws a {@link UnknownError} for other errors
      */
     static async Update() {
         try {
@@ -38,13 +53,13 @@ export default class CurrentUserController {
             let listFriends = getFriendsRes.map(u => new User(u.Username));
             let listFriendRequests = getFriendRequestsRes.map(u => new User(u.Username));
 
-            if (!(this._instance instanceof CurrentUserController)) {
-                this._instance = new CurrentUserController(currentUser, listFriends, listFriendRequests);
-            }
-            else {
+            if (this._instance instanceof CurrentUserController) {
                 this._instance._currentUser = currentUser;
                 this._instance._friends = listFriends;
                 this._instance._friendRequests = listFriendRequests;
+            }
+            else {
+                this._instance = new CurrentUserController(currentUser, listFriends, listFriendRequests);
             }
 
             this._onReadyCallbacks.forEach(callback => callback());
@@ -52,7 +67,7 @@ export default class CurrentUserController {
         catch (e) {
             let response = e as Response;
 
-            console.error(`${response.status}: Error updating current user.`);
+            console.error('Code %d: Error updating current user.', response.status);
 
             throw CodeToError(response.status);
         }

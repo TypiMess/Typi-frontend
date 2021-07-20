@@ -3,7 +3,7 @@ import { SessionsApi } from "../../sdk";
 import { CodeToError } from "../errors/Errors";
 
 export default class SessionsController {
-    private static _instance: SessionsController;
+    private static _instance?: SessionsController;
     private static _sessionsAPI = new SessionsApi(APIConfig);
     
     private constructor() {

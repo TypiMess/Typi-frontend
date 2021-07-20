@@ -3,7 +3,7 @@ import { CodeToError } from "../errors/Errors";
 import APIConfig from "./APIConfig";
 
 export default class CredentialsController {
-    private static _instance: CredentialsController;
+    private static _instance?: CredentialsController;
     private static _credsAPI = new CredsApi(APIConfig);
     
     private constructor() {

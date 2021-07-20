@@ -7,7 +7,7 @@ interface IOnChangeCallbackFunction {
 }
 
 export default class ReceiverController {
-    private static _instance: ReceiverController;
+    private static _instance?: ReceiverController;
     private onChangeCallbacks: IOnChangeCallbackFunction[] = [];
 
     private _receiver?: User;
@@ -19,13 +19,20 @@ export default class ReceiverController {
     static get Instance() { return this._instance || new ReceiverController() }
 
     /**
+     * Delete saved instance
+     */
+    static DestroyInstance() {
+        delete this._instance;
+    }
+
+    /**
      * Set a new receiver user
      * ! Not using JS setter because it forces getter to return the same type
      * @param username username of the new receiver
      * @throws {@link NotFoundError} if user with given user cannot be found
      */
     SetReceiver(username: string) {
-        const user = CurrentUserController.Instance.Friends.find(user => user.Username === username);
+        const user = CurrentUserController.Instance?.Friends.find(user => user.Username === username);
         
         if (user)
         {

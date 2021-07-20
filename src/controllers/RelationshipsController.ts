@@ -3,7 +3,7 @@ import { CodeToError } from "../errors/Errors";
 import APIConfig from "./APIConfig"
 
 export default class RelationshipsController {
-    private static _instance: RelationshipsController;
+    private static _instance?: RelationshipsController;
     private static _usersAPI = new UsersApi(APIConfig);
 
     private constructor() {

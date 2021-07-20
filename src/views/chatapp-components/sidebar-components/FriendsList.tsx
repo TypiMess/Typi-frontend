@@ -2,23 +2,47 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import CurrentUserController from "../../../controllers/CurrentUserController";
 import ReceiverController from "../../../controllers/ReceiverController";
+import User from "../../../models/User";
+import App from "../../App";
 import NotificationContainer from "../../notification-components/NotificationContainer";
 import Avatar from "../Avatar";
 import MenuEntry from "../MenuEntry";
 
 interface IStates {
+    friends: User[],
+    friendRequests: User[],
     selectedUsername: string
 }
 
 export default class FriendsList extends React.Component<{}, IStates> {
     constructor(props: {}) {
         super(props);
-        
+
         this.state = {
+            friends: [],
+            friendRequests: [],
             selectedUsername: ''
         }
 
+        this.handleUpdateFriends = this.handleUpdateFriends.bind(this);
         this.handleFriendClick = this.handleFriendClick.bind(this);
+    }
+
+    componentDidMount() {
+        if (CurrentUserController.Initialized) {
+            this.handleUpdateFriends();
+            CurrentUserController.AddOnReadyListener(this.handleUpdateFriends);
+        }
+        else {
+            App.CheckSession();
+        }
+    }
+
+    handleUpdateFriends() {
+        this.setState({
+            friends: CurrentUserController.Instance!.Friends,
+            friendRequests: CurrentUserController.Instance!.FriendRequests
+        });
     }
 
     handleFriendClick(friendsUsername: string) {
@@ -33,9 +57,6 @@ export default class FriendsList extends React.Component<{}, IStates> {
     }
 
     render() {
-        const friends = CurrentUserController.Instance.Friends;
-        const friendRequests = CurrentUserController.Instance.FriendRequests;
-
         return (
             <>
                 {
@@ -43,16 +64,16 @@ export default class FriendsList extends React.Component<{}, IStates> {
                     <Redirect to={'/t/' + encodeURIComponent(this.state.selectedUsername)} />
                 }
                 {
-                    friendRequests.length > 0 &&
+                    this.state.friendRequests.length > 0 &&
 
                     <MenuEntry>
                         <strong>Pending requests</strong>
-                        <span className="ms-auto badge bg-info">{friendRequests.length}</span>
+                        <span className="ms-auto badge bg-info">{this.state.friendRequests.length}</span>
                     </MenuEntry>
                 }
 
                 {
-                    friends.map(friend => {
+                    this.state.friends.map(friend => {
                         return (
                             <MenuEntry key={friend.Username} onClick={() => this.handleFriendClick(friend.Username)}>
                                 <div className="d-inline-block me-3"><Avatar text={friend.Username.charAt(0)}></Avatar></div>

@@ -10,7 +10,7 @@ export default class User {
         }
         else {
             this._username = "";
-            console.error("Invalid username found: \s!", username);
+            console.error("Invalid username found: %s!", username);
         }
             
     }

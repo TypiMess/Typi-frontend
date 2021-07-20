@@ -5,6 +5,7 @@ import SessionsController from '../controllers/SessionsController';
 import CurrentUserController from '../controllers/CurrentUserController';
 import NotificationContainer from './notification-components/NotificationContainer';
 import '../styles/app.scss'
+import ReceiverController from '../controllers/ReceiverController';
 
 interface IStates {
     isLoggedIn: boolean,
@@ -13,6 +14,7 @@ interface IStates {
 
 class App extends React.Component<{}, IStates> {
     private static _instance: App;
+    private _checkingSession = false;
 
     constructor(props: {}) {
         super(props);
@@ -37,7 +39,8 @@ class App extends React.Component<{}, IStates> {
 
     verifySession() {
         this.setState({
-            isLoggedIn: false
+            isLoggedIn: false,
+            isLoading: true
         });
 
         SessionsController.Instance.VerifySession().then(valid => {
@@ -53,7 +56,8 @@ class App extends React.Component<{}, IStates> {
     }
 
     static CheckSession() {
-        this._instance.verifySession();
+        if (!this._instance.state.isLoading)
+            this._instance.verifySession();
     }
 
     handleOnLogin() {
@@ -61,6 +65,8 @@ class App extends React.Component<{}, IStates> {
     }
 
     handleOnLogout() {
+        CurrentUserController.DestroyInstance();
+        ReceiverController.DestroyInstance();
         this.setState({ isLoggedIn: false });
     }
 
