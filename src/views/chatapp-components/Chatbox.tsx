@@ -5,6 +5,8 @@ import User from "../../models/User";
 import '../../styles/chatbox.scss'
 import NotificationContainer from "../notification-components/NotificationContainer";
 import InfoBar from "./chatbox-components/InfoBar";
+import InputBar from "./chatbox-components/InputBar";
+import MessagesContainer from "./chatbox-components/MessagesContainer";
 
 interface IProps {
     match: match<{ targetUsername: string }>
@@ -45,7 +47,7 @@ export default class Chatbox extends React.Component<IProps, IStates> {
 
     render() {
         return (
-            <div id="chatbox">
+            <div className="d-flex flex-column border-start" id="chatbox">
                 {
                     this.state.redirectBack && <Redirect to="/" />
                 }
@@ -53,6 +55,8 @@ export default class Chatbox extends React.Component<IProps, IStates> {
                     this.state.receiver &&
                     <>
                         <InfoBar />
+                        <MessagesContainer />
+                        <InputBar />
                     </>
                 }
             </div>

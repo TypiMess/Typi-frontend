@@ -14,7 +14,7 @@
 
 #sendButton {
     cursor: pointer;
-    color: blue;
+    color: rgb(45, 45, 255);
     width: 36px;
     height: 36px;
     align-items: center;
@@ -34,17 +34,21 @@
     }
 }
 
-.outgoing_msg {
-    background-color: #007bff;
-    color: white;
-}
-
-.incoming_msg {
-    background-color: #eee;
-}
-
-.outgoing_msg, .incoming_msg {
-    border-radius: 18px;
-    padding: 7px 12px 8px 12px;
-    max-width: 90%;
+#messagesContainer {
+    
+    .outgoing_msg {
+        background-color: #007bff;
+        color: white;
+        margin-left: auto;
+    }
+    
+    .incoming_msg {
+        background-color: #eee;
+    }
+    
+    .outgoing_msg, .incoming_msg {
+        border-radius: 50rem;
+        padding: 7px 12px 8px 12px;
+        max-width: 90%;
+    }
 }
