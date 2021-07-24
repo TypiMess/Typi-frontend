@@ -46,13 +46,13 @@ export default class NotificationContainer extends React.Component<{}, IStates> 
         return (
             <div className="toast-container position-fixed top-0 end-0 p-3" style={this.style}>
                 {
-                    this.state.notifications.map(noti => {
+                    this.state.notifications.map((noti, i) => {
                         return (
                             <Notification
                                 title={noti.title}
                                 type={noti.type}
-                                key={this.state.notifications.indexOf(noti)}
-                                notiID={this.state.notifications.indexOf(noti)}
+                                key={i}
+                                notiID={i}
                                 onClose={this.handleRemoveNotification}>
                                 {noti.body}
                             </Notification>

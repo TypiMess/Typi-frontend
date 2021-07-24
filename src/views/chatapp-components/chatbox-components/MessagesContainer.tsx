@@ -9,22 +9,20 @@ interface IStates {
 export default class MessagesContainer extends React.Component<{}, IStates> {
     constructor(props: {}) {
         super(props);
-        
+
         this.state = {
             messages: []
         }
     }
-    
+
     render() {
         return (
-            <div id="messagesContainer" className="flex-grow-1">
-                <div className="d-flex flex-column-reverse h-100">
-                    {
-                        this.state.messages.map(msg => {
-                            return <MessageView message={msg}></MessageView>
-                        })
-                    }
-                </div>
+            <div id="messagesContainer" className="flex-grow-1 d-flex flex-column-reverse overflow-auto">
+                {
+                    this.state.messages.map((msg, i) => {
+                        return <MessageView message={msg} key={i}></MessageView>
+                    })
+                }
             </div>
         )
     }

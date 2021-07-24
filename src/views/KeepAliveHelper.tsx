@@ -42,7 +42,7 @@ export default class KeepAliveHelper extends React.Component<IProps> {
         }
         sendKeepAlive();
         
-        this.sendKeepAliveInterval = setInterval(sendKeepAlive, 1000 * 60 * 5);
+        this.sendKeepAliveInterval = window.setInterval(sendKeepAlive, 1000 * 60 * 5);
     }
     
     handleOnIdle() {

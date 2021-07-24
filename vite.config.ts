@@ -10,7 +10,7 @@ const httpsAvailable = fs.existsSync(sslPath + 'privkey.pem') && fs.existsSync(s
 export default defineConfig({
   plugins: [reactRefresh()],
   server: {
-	host: "0.0.0.0",
+    host: "0.0.0.0",
     port: 2053,
     https: httpsAvailable ? {
       key: fs.readFileSync(sslPath + 'privkey.pem'),
